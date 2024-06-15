@@ -8,7 +8,6 @@ import os
 
 news_service_bp = Blueprint('news_service', __name__)
 
-# Function to summarize text using Gemini API
 def summarize_text(text):
     if not text:
         return "Summary not available due to empty content."
@@ -28,7 +27,6 @@ def summarize_text(text):
             response = chat_session.send_message(text)
             return response.text
     except genai.types.generation_types.StopCandidateException as e:
-        # Handle the exception gracefully
         print(f"StopCandidateException occurred: {e}")
         return "Summary not available due to content restrictions."
 
@@ -43,7 +41,7 @@ def news():
     }
     try:
         response = requests.get(url, params=params)
-        response.raise_for_status()  # Raise an exception for bad status codes
+        response.raise_for_status()  
         news_data = response.json()
         if 'articles' not in news_data:
             return jsonify({"error": "Failed to fetch news articles"}), 500
