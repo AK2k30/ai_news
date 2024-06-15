@@ -8,7 +8,6 @@ import os
 
 research_papers_service_bp = Blueprint('research_papers_service', __name__)
 
-# Function to summarize text using Gemini API
 def summarize_text(text):
     if not text:
         return "Summary not available due to empty content."
@@ -34,17 +33,17 @@ def summarize_text(text):
 
 @research_papers_service_bp.route('/api/research_papers', methods=['GET'])
 def research_papers():
-    NEWS_API_KEY = os.getenv("NEWS_API_KEY")  # Example usage, adjust as needed
+    NEWS_API_KEY = os.getenv("NEWS_API_KEY")  
     url = 'http://export.arxiv.org/api/query'
     params = {
-        'search_query': 'cat:cs.AI',  # Search query for AI category
+        'search_query': 'cat:cs.AI',  
         'sortBy': 'submittedDate',
         'sortOrder': 'descending',
-        'max_results': 10,  # Limiting to 10 papers for example
+        'max_results': 10,  
     }
     try:
         response = requests.get(url, params=params)
-        response.raise_for_status()  # Raise an exception for bad status codes
+        response.raise_for_status()  
         research_papers_data = response.content
         summarized_papers = parse_and_summarize_research_papers(research_papers_data)
         return jsonify(summarized_papers)
@@ -64,7 +63,6 @@ def parse_and_summarize_research_papers(xml_data):
             summary = entry.find('atom:summary', namespace).text
             link = entry.find('atom:link[@rel="alternate"]', namespace).attrib['href']
             
-            # Summarize the abstract
             summary = summarize_text(summary)
             
             papers.append({
