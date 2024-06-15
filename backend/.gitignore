@@ -1,0 +1,9 @@
+.env
+.venv
+.vscode
+__pycache__
+ai_news
+ai_news.egg-info
+build
+dist
+htmlcov
